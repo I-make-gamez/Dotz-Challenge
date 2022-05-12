@@ -22,7 +22,6 @@ function draw(){
     for(var i=blobs.length-1; i>=0; i--){
         if(blob.eats(blobs[i])){
             blobs.splice(i, 1)
-
         }
         blobs[i].show()
     }
