@@ -17,7 +17,7 @@ function Blob(x, y, r){
     this.eats = function(other){
         var d = p5.Vector.dist(this.pos, other.pos)
         if(d < this.r + other.r){
-            this.r += other.r*0.01
+            this.r+=other.r*0.025
             en += 1
             eatenList.innerHTML="Total Eaten: " + en
             return true;
@@ -43,5 +43,14 @@ function Blob(x, y, r){
             }
             }
         }, 1000)        
+    }
+
+    this.resetTimer = function(){
+        posib = false
+        setup();
+        timer = 60
+        tim.innerHTML = `Timer: ${timer}`
+        en = 0
+        eatenList.innerHTML="Total Eaten: " + en
     }
 }
