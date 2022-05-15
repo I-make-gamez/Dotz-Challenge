@@ -1,56 +1,86 @@
 var en = 0
-var timer = 60
 var posib = true
 const eatenList = document.querySelector('.el')
-const tim = document.querySelector('.tim')
 
-function Blob(x, y, r){
+function EnemyAi(x, y, r) {
     this.pos = createVector(x, y)
     this.r = r
 
-    this.update = function(){
-        var mouse = createVector(mouseX-width/2, mouseY-height/2)
+
+    this.update = function (enemy) {
+        //var Ai = createVector(Aivo - width / 2, Aivo - height / 2)
+        //Ai.setMag(3)
+        //this.pos.add(Ai)
+    }
+
+    this.show = function () {
+        ellipse(this.pos.x, this.pos.y, this.r * 2, this.r * 2)
+    }
+
+    this.eats = function (other) {
+        var d = p5.Vector.dist(this.pos, other.pos)
+        if (d < this.r + other.r - 15) {
+            var sum = PI *this.r *this.r + PI *other.r*other.r
+            this.r = sqrt(sum/PI)
+
+            //this.r += other.r * 0.025
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
+function Blob(x, y, r) {
+    this.pos = createVector(x, y)
+    this.r = r
+    var r = random(1, 255)
+    var g = random(1, 255)
+    var b = random(1, 255)
+
+     
+
+
+
+    this.update = function () {
+        var mouse = createVector(mouseX - width / 2, mouseY - height / 2)
         mouse.setMag(3)
         this.pos.add(mouse)
     }
 
-    this.eats = function(other){
+
+
+    this.eats = function (other) {
         var d = p5.Vector.dist(this.pos, other.pos)
-        if(d < this.r + other.r){
-            this.r+=other.r*0.025
-            en += 1
-            eatenList.innerHTML="Total Eaten: " + en
+        if (d < this.r + other.r - 15) {
+            var sum = PI *this.r *this.r + PI *other.r*other.r
+            this.r = sqrt(sum/PI)
+            //this.r += other.r * 0.050
+            eatenList.innerHTML = "Mass: " + Math.round(this.r)
             return true;
-        }else{
+        } else {
             return false;
         }
 
     }
 
-    this.show = function(){
-        fill(255)
-        ellipse(this.pos.x, this.pos.y, this.r*2, this.r*2)
+    this.eatsEnemy = function (enemy) {
+        var d = p5.Vector.dist(this.pos, enemy.pos)
+        if (d < Math.round(this.r + enemy.r)-(32*3)) {
+            var sum = PI *this.r *this.r + PI *enemy.r*enemy.r
+            this.r = sqrt(sum/PI)
+            //this.r += enemy.r * 0.1
+            en += 1
+            eatenList.innerHTML = "Mass: " + Math.round(this.r)
+            return true;
+        } else {
+            return false;
+        }
+
     }
 
-    this.updateTimer = function(){
-        setInterval(function(){
-            if(posib === true){
-                timer -= 1
-                tim.innerHTML = `Timer: ${timer}`
-                if(timer === 0){
-                noLoop()
-                posib = false
-            }
-            }
-        }, 1000)        
-    }
-
-    this.resetTimer = function(){
-        posib = false
-        setup();
-        timer = 60
-        tim.innerHTML = `Timer: ${timer}`
-        en = 0
-        eatenList.innerHTML="Total Eaten: " + en
+    this.show = function () {
+        fill(r, g, b)
+        ellipse(this.pos.x, this.pos.y, this.r * 2, this.r * 2)
     }
 }
